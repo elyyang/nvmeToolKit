@@ -35,18 +35,29 @@
 
 #include <stdint.h>
 
-class uio_c;
+#define ADMIN_QUEUE_ID (0)
 
-class adminCmdHandle_c
+class controllerHandle_c
 {
     private:
 
-        adminCmdHandle_c();
-        ~adminCmdHandle_c();
+        controllerHandle_c();
+        ~controllerHandle_c();
+
+        uint32_t mIoQueuePairCount;
+        uint64_t mAdminSubmissionQueueBaseAddress;
+        uint64_t mAdminCompletionQueueBaseAddress;
+        uint64_t mAdminDataBaseAddress;
+        uint32_t mAdminQueueSize;
+        uint32_t mCommandId;
+
 
     public:
 
-        static adminCmdHandle_c& getInstance();
+        static controllerHandle_c& getInstance();
 
-        void createAdminQueuePair();
+        void configureAdminQueue();
+        void enableController();
+        bool isControllerReady();
+        void issueIdentifyCommand();
 };

@@ -31,42 +31,79 @@
 *
 *********************************************************************************************/
 
-#include "adminHandler.h"
+#include "controllerHandle.h"
 #include "controllerMmio.h"
 #include "udma.h"   
+#include "regAccess.h"
 
 extern int g_uioId;
 
-adminCmdHandle_c::adminCmdHandle_c()
+controllerHandle_c::controllerHandle_c()
 {
+    udma_c& udmaDrv = udma_c::getInstance();
+    mAdminSubmissionQueueBaseAddress = udmaDrv.getBufferPhysicalAddress(0);
+    mAdminCompletionQueueBaseAddress = udmaDrv.getBufferPhysicalAddress(1);
+    mAdminDataBaseAddress = udmaDrv.getBufferPhysicalAddress(2);
+    mAdminQueueSize = 128;
+    mCommandId = 0;
 }
 
-adminCmdHandle_c::~adminCmdHandle_c()    
+controllerHandle_c::~controllerHandle_c()    
 {	
 }
 
-adminCmdHandle_c& adminCmdHandle_c::getInstance()
+controllerHandle_c& controllerHandle_c::getInstance()
 {
-    static adminCmdHandle_c mInstance;
+    static controllerHandle_c mInstance;
     return mInstance;
 }
 
-void adminCmdHandle_c::createAdminQueuePair()
+void controllerHandle_c::configureAdminQueue()
 {    
     aqa_t aqaShadowReg;
     acq_t acqShadowReg;
     asq_t asqShadowReg;
 
-    udma_c& udmaDrv = udma_c::getInstance();
-
-    aqaShadowReg.adminSubmissionQueueSize = 128;
-    aqaShadowReg.adminCompletionQueueSize = 128;
-    acqShadowReg.adminCompletionQueueBase = udmaDrv.getBufferPhysicalAddress(0);
-    asqShadowReg.adminSubmissionQueueBase = udmaDrv.getBufferPhysicalAddress(1);
+    aqaShadowReg.adminSubmissionQueueSize = mAdminQueueSize;
+    aqaShadowReg.adminCompletionQueueSize = mAdminQueueSize;
+    acqShadowReg.adminCompletionQueueBase = mAdminCompletionQueueBaseAddress;
+    asqShadowReg.adminSubmissionQueueBase = mAdminSubmissionQueueBaseAddress;
 
     controllerMmio_c& nvmeControllerDrv = controllerMmio_c::getInstance();
 
     nvmeControllerDrv.setAdminQueueAttributes(g_uioId, aqaShadowReg);
     nvmeControllerDrv.setAdminCompletionQueueBaseAddress(g_uioId, acqShadowReg);
     nvmeControllerDrv.setAdminSubmissionQueueBaseAddress(g_uioId, asqShadowReg); 
+}
+
+void controllerHandle_c::enableController()
+{
+    controllerMmio_c& nvmeControllerDrv = controllerMmio_c::getInstance();
+    cc_t shadowReg = nvmeControllerDrv.getControllerConfiguration(g_uioId);
+    shadowReg.enable = 1;
+    nvmeControllerDrv.setControllerConfiguration(g_uioId, shadowReg);
+}
+
+bool controllerHandle_c::isControllerReady()
+{
+    controllerMmio_c& nvmeControllerDrv = controllerMmio_c::getInstance();
+    csts_t statusReg = nvmeControllerDrv.getControllerStatus(g_uioId);
+    return (statusReg.ready == 1);
+}
+
+void controllerHandle_c::issueIdentifyCommand()
+{
+    identifyCommand_t nvmCommand = {};
+    nvmCommand.common.opcode = NVME_COMMAND_ADMIN_IDENTIFY;
+    nvmCommand.common.commandIdentifier = mCommandId++;
+    nvmCommand.common.dataPointer.prpEntries.prpEntry1 = mAdminDataBaseAddress;
+
+    controllerMmio_c& nvmeControllerDrv = controllerMmio_c::getInstance();
+    uint16_t sqTailDoorbell = nvmeControllerDrv.getSqTailDoorbell(g_uioId, ADMIN_QUEUE_ID);
+
+    uint64_t destAddress = mAdminSubmissionQueueBaseAddress + (sqTailDoorbell * sizeof(nvmeCommand_t));
+
+    regWrite64Bit(destAddress, *(uint64_t*)&nvmCommand);
+
+    nvmeControllerDrv.incrementSqTailDoorbell(g_uioId, ADMIN_QUEUE_ID);
 }
