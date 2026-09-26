@@ -322,7 +322,7 @@ typedef struct __attribute__((packed, aligned(4)))
     //dw11 bytes 44-47
     uint32_t cnsSpecificIdentifier          : 16;
     uint32_t _reserved_1                    : 8;
-    uint32_t  commandSetIdentifier          : 8;
+    uint32_t commandSetIdentifier          : 8;
     
     //dw12 bytes 48-51
     uint32_t dword12;    

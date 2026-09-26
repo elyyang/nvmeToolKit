@@ -94,11 +94,14 @@ bool controllerHandle_c::isControllerReady()
 void controllerHandle_c::issueIdentifyCommand()
 {
     identifyCommand_t nvmCommand = {};
+    
     nvmCommand.common.opcode = NVME_COMMAND_ADMIN_IDENTIFY;
     nvmCommand.common.commandIdentifier = mCommandId++;
     nvmCommand.common.dataPointer.prpEntries.prpEntry1 = mAdminDataBaseAddress;
+    nvmCommand.controllerOrNamespaceStructure = 1; // Identify Controller
 
     controllerMmio_c& nvmeControllerDrv = controllerMmio_c::getInstance();
+
     uint16_t sqTailDoorbell = nvmeControllerDrv.getSqTailDoorbell(g_uioId, ADMIN_QUEUE_ID);
 
     uint64_t destAddress = mAdminSubmissionQueueBaseAddress + (sqTailDoorbell * sizeof(nvmeCommand_t));
