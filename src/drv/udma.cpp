@@ -123,3 +123,22 @@ void udma_c::dumpUdmaBufferInformation()
         printf("[udma buffer %d] address: 0x%lx physical address: 0x%lx size: %u(%#x)\n", i, (uintptr_t)bufferAddress[i], (uintptr_t)bufferPhysicalAddress[i], mBufferSize[i], mBufferSize[i]);    
     }
 }
+
+void udma_c::dumpUdmaBufferContent(uint32_t bufferIndex, uint32_t offset, uint32_t length)
+{
+    NVME_DBG_ASSERT((bufferIndex<DEFAULT_UDMA_BUFFER_COUNT), "bufferIndex out of range!")
+    NVME_DBG_ASSERT((offset<getBufferSize(bufferIndex)), "offset out of range!")
+    NVME_DBG_ASSERT(((offset+length)<=getBufferSize(bufferIndex)), "length out of range!")
+
+    uint8_t* bufferPtr = (uint8_t*)getBufferAddress(bufferIndex);
+    
+    for(uint32_t i=0; i<length; i++)
+    {
+        if(i%16==0)
+        {
+            printf("\n[udma buffer %d] 0x%lx: ", bufferIndex, (uintptr_t)(bufferPtr+offset+i));
+        }
+        printf("%02x ", *(bufferPtr+offset+i));
+    }
+    printf("\n");
+}

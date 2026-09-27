@@ -38,3 +38,4 @@ void demo_uio();
 void demo_uio2();
 void demo_pcieCfgSpace();
 void demo_nvmControllerMmioSpace();
+void demo_nvmeEnumeration();

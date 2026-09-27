@@ -52,6 +52,7 @@ void menuInit()
     g_demo_subMenu.addItem(demo_uio, "a brief demo on uio_c driver...");
     g_demo_subMenu.addItem(demo_uio2, "bar 0 mem dump...");
     g_demo_subMenu.addItem(demo_udma, "udma_c driver");
+    g_demo_subMenu.addItem(demo_nvmeEnumeration, "nvme enumeration");
 
     g_tests_subMenu.addDescription("unit tests");
     g_tests_subMenu.addItem(test_udma, "udma test");

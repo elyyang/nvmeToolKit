@@ -36,8 +36,8 @@
 #include "controllerMmio.h"
 #include "pcieCfgSpace.h"
 #include "menu.h"
-
 #include "demo.h"
+#include "controllerHandle.h"
 
 extern int g_uioId;
 
@@ -65,7 +65,7 @@ void demo_uio()
 
 void demo_uio2()
 {
-    uio_c& uioDriver = uio_c::getInstance(g_uioId);
+    uio_c& uioDriver = uio_c::getInstance(g_uioId);    
     uioDriver.dumpBar0MemorySpace(0, 12);
     uioDriver.dumpBar0MemorySpace(0x1000, 32);
 }
@@ -128,4 +128,19 @@ void demo_nvmControllerMmioSpace()
     printf("controller ready modes supported: 0x%x \n", controllerCapabiltiyShadow.controllerReadyModesSupported);
     printf("NVM subsystem shutdown enhancements supported: 0x%x \n", controllerCapabiltiyShadow.nvmSubsystemShutdownEnhancementsSupported);
 
+}
+
+void demo_nvmeEnumeration()
+{
+    controllerHandle_c& handle = controllerHandle_c::getInstance();
+    handle.configureAdminQueue();
+    handle.enableController();
+    while (!handle.isControllerReady())
+    {
+        printf("Waiting for controller to be ready...\n");
+    }
+    handle.issueIdentifyCommand();
+
+    udma_c& udmaDriver = udma_c::getInstance();
+    udmaDriver.dumpUdmaBufferContent(2, 0, 4096);
 }

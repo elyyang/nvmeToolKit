@@ -41,9 +41,9 @@ extern int g_uioId;
 controllerHandle_c::controllerHandle_c()
 {
     udma_c& udmaDrv = udma_c::getInstance();
-    mAdminSubmissionQueueBaseAddress = udmaDrv.getBufferPhysicalAddress(0);
-    mAdminCompletionQueueBaseAddress = udmaDrv.getBufferPhysicalAddress(1);
-    mAdminDataBaseAddress = udmaDrv.getBufferPhysicalAddress(2);
+    mAdminSubmissionQueueBaseAddress = udmaDrv.getBufferAddress(0);
+    mAdminCompletionQueueBaseAddress = udmaDrv.getBufferAddress(1);
+    mAdminDataBaseAddress = udmaDrv.getBufferAddress(2);
     mAdminQueueSize = 128;
     mCommandId = 0;
 }
@@ -93,11 +93,13 @@ bool controllerHandle_c::isControllerReady()
 
 void controllerHandle_c::issueIdentifyCommand()
 {
+    udma_c& udmaDrv = udma_c::getInstance();
+
     identifyCommand_t nvmCommand = {};
     
     nvmCommand.common.opcode = NVME_COMMAND_ADMIN_IDENTIFY;
     nvmCommand.common.commandIdentifier = mCommandId++;
-    nvmCommand.common.dataPointer.prpEntries.prpEntry1 = mAdminDataBaseAddress;
+    nvmCommand.common.dataPointer.prpEntries.prpEntry1 = udmaDrv.getBufferPhysicalAddress(2);
     nvmCommand.controllerOrNamespaceStructure = 1; // Identify Controller
 
     controllerMmio_c& nvmeControllerDrv = controllerMmio_c::getInstance();
