@@ -49,20 +49,21 @@ class udma_c
         udma_c();        
         ~udma_c();
         
-        int udmaBuffer_fd[DEFAULT_UDMA_BUFFER_COUNT];
-        int udmaBufferPhysicalAddress_fd[DEFAULT_UDMA_BUFFER_COUNT];        
-        void* bufferAddress[DEFAULT_UDMA_BUFFER_COUNT];
-        void* bufferPhysicalAddress[DEFAULT_UDMA_BUFFER_COUNT];
+        int mUdmaBuffer_fd[DEFAULT_UDMA_BUFFER_COUNT];
+        int mUdmaBufferPhysicalAddress_fd[DEFAULT_UDMA_BUFFER_COUNT];        
+        void* mBufferAddress[DEFAULT_UDMA_BUFFER_COUNT];
+        void* mBufferPhysicalAddress[DEFAULT_UDMA_BUFFER_COUNT];
         uint32_t mBufferSize[DEFAULT_UDMA_BUFFER_COUNT];
 
     public:
 
         static udma_c& getInstance();      
 
-        uintptr_t getBufferAddress(uint32_t bufferIndex);        
-        uintptr_t getBufferPhysicalAddress(uint32_t bufferIndex);
-        uint32_t getBufferSize(uint32_t bufferIndex);
+        uintptr_t getBufferAddress(uint32_t udmaId);        
+        uintptr_t getBufferPhysicalAddress(uint32_t udmaId);
+        uint32_t getBufferSize(uint32_t udmaId);
 
         void dumpUdmaBufferInformation();
-        void dumpUdmaBufferContent(uint32_t bufferIndex, uint32_t offset, uint32_t length);
+        void dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t length);
+        void writeBuffer(uint32_t udmaId, uint32_t offset, uint32_t length, uint32_t dwordData);
 };

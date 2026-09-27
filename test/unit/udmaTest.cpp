@@ -35,14 +35,14 @@
 #include "prbs32.h"
 #include "util.h"
 
-void test_udma()
+void test_udma1()
 {
     udma_c& udmaDriver = udma_c::getInstance();
    
-    for(uint32_t bufferIndex=0; bufferIndex<DEFAULT_UDMA_BUFFER_COUNT; bufferIndex++)
+    for(uint32_t udmaId=0; udmaId<DEFAULT_UDMA_BUFFER_COUNT; udmaId++)
     {        
-        uintptr_t bufferAddressUnderTest = udmaDriver.getBufferAddress(bufferIndex);
-        uint32_t bufferSizeUnderTest = udmaDriver.getBufferSize(bufferIndex);
+        uintptr_t bufferAddressUnderTest = udmaDriver.getBufferAddress(udmaId);
+        uint32_t bufferSizeUnderTest = udmaDriver.getBufferSize(udmaId);
         uint32_t prbs32StartingSeed = 0x1;
 
         prbs32_fill(bufferAddressUnderTest, prbs32StartingSeed, BYTE_TO_DWORD(bufferSizeUnderTest));
@@ -50,11 +50,37 @@ void test_udma()
 
         if(verificationResult)
         {
-            printf("PRBS32 verification passed for buffer index %u\n", bufferIndex);
+            printf("PRBS32 verification passed for buffer index %u\n", udmaId);
         }
         else
         {
-            printf("PRBS32 verification failed for buffer index %u\n", bufferIndex);
+            printf("PRBS32 verification failed for buffer index %u\n", udmaId);
         }
     }
+}
+
+void test_udma2()
+{
+    udma_c& udmaDriver = udma_c::getInstance();
+
+    uint32_t udmaId=0;        
+    uintptr_t bufferAddressUnderTest = udmaDriver.getBufferAddress(udmaId);
+    uint32_t bufferSizeUnderTest = 0x100; // Limit the length to 1024 bytes for demonstration
+    uint32_t prbs32StartingSeed = 0x1;
+
+    prbs32_fill(bufferAddressUnderTest, prbs32StartingSeed, BYTE_TO_DWORD(bufferSizeUnderTest));
+    udmaDriver.dumpUdmaBufferContent(udmaId, 0, bufferSizeUnderTest+0x100);
+}
+
+void test_udma3()
+{
+    udma_c& udmaDriver = udma_c::getInstance();
+
+    uint32_t udmaId=0;        
+    //uintptr_t bufferAddressUnderTest = udmaDriver.getBufferAddress(udmaId);
+    uint32_t bufferSizeUnderTest = udmaDriver.getBufferSize(udmaId);
+    //uint32_t prbs32StartingSeed = 0x1;
+
+    udmaDriver.writeBuffer(udmaId, 0, bufferSizeUnderTest, 0xc001cafe);
+    udmaDriver.dumpUdmaBufferContent(udmaId, 0, bufferSizeUnderTest);
 }

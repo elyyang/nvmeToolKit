@@ -33,4 +33,6 @@
 
 #pragma once
 
-void test_udma();
+void test_udma1();
+void test_udma2();
+void test_udma3();

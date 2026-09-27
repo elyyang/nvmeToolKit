@@ -62,24 +62,24 @@ udma_c::udma_c(void)
         strcpy(fdPath, "/dev/udmabuf");
         strcat(fdPath, fdIdx);
         
-        udmaBuffer_fd[idx] = open(fdPath, O_RDWR | O_SYNC);       
-        NVME_DBG_ASSERT((udmaBuffer_fd[idx]>0), "udmaBuffer_fd failed to open!")
+        mUdmaBuffer_fd[idx] = open(fdPath, O_RDWR | O_SYNC);       
+        NVME_DBG_ASSERT((mUdmaBuffer_fd[idx]>0), "mUdmaBuffer_fd failed to open!")
 
-        bufferAddress[idx] = mmap(NULL, mBufferSize[idx], PROT_READ | PROT_WRITE, MAP_SHARED, udmaBuffer_fd[idx], 0);
-        NVME_DBG_ASSERT((bufferAddress[idx]!=MAP_FAILED), "bufferAddress map failed!")    
+        mBufferAddress[idx] = mmap(NULL, mBufferSize[idx], PROT_READ | PROT_WRITE, MAP_SHARED, mUdmaBuffer_fd[idx], 0);
+        NVME_DBG_ASSERT((mBufferAddress[idx]!=MAP_FAILED), "mBufferAddress map failed!")
 
         //3. get physical address of the buffer
         strcpy(fdPath, "/sys/class/u-dma-buf/udmabuf");
         strcat(fdPath, fdIdx);
         strcat(fdPath, "/phys_addr");
 
-        udmaBufferPhysicalAddress_fd[idx] = open(fdPath, O_RDONLY);
-        NVME_DBG_ASSERT((udmaBufferPhysicalAddress_fd[idx]>0), "udmaBufferPhysicalAddress_fd failed to open!")
+        mUdmaBufferPhysicalAddress_fd[idx] = open(fdPath, O_RDONLY);
+        NVME_DBG_ASSERT((mUdmaBufferPhysicalAddress_fd[idx]>0), "mUdmaBufferPhysicalAddress_fd failed to open!")
 
         char buffer[BYTES_TO_READ];
 
-        read(udmaBufferPhysicalAddress_fd[idx], buffer, BYTES_TO_READ);
-        sscanf(buffer, "%p", &bufferPhysicalAddress[idx]);
+        read(mUdmaBufferPhysicalAddress_fd[idx], buffer, BYTES_TO_READ);
+        sscanf(buffer, "%p", &mBufferPhysicalAddress[idx]);
     }
 }
 
@@ -89,9 +89,9 @@ udma_c::~udma_c()
 
     for(uint32_t idx=0; idx<DEFAULT_UDMA_BUFFER_COUNT; idx++)
     {
-        close(udmaBuffer_fd[idx]);
-        close(udmaBufferPhysicalAddress_fd[idx]);        
-        munmap(bufferAddress[idx], mBufferSize[idx]);
+        close(mUdmaBuffer_fd[idx]);
+        close(mUdmaBufferPhysicalAddress_fd[idx]);        
+        munmap(mBufferAddress[idx], mBufferSize[idx]);
     } 
 }
 
@@ -101,44 +101,58 @@ udma_c& udma_c::getInstance()
     return instance;
 }
 
-uintptr_t udma_c::getBufferAddress(uint32_t bufferIndex)
+uintptr_t udma_c::getBufferAddress(uint32_t udmaId)
 {
-    return (uintptr_t)bufferAddress[bufferIndex];
+    return (uintptr_t)mBufferAddress[udmaId];
 }
 
-uintptr_t udma_c::getBufferPhysicalAddress(uint32_t bufferIndex)
+uintptr_t udma_c::getBufferPhysicalAddress(uint32_t udmaId)
 {
-    return (uintptr_t)bufferPhysicalAddress[bufferIndex];
+    return (uintptr_t)mBufferPhysicalAddress[udmaId];
 }
 
-uint32_t udma_c::getBufferSize(uint32_t bufferIndex)
+uint32_t udma_c::getBufferSize(uint32_t udmaId)
 {
-    return mBufferSize[bufferIndex];
+    return mBufferSize[udmaId];
 }
 
 void udma_c::dumpUdmaBufferInformation()
 {   
     for(uint32_t i=0; i<DEFAULT_UDMA_BUFFER_COUNT; i++)
     {
-        printf("[udma buffer %d] address: 0x%lx physical address: 0x%lx size: %u(%#x)\n", i, (uintptr_t)bufferAddress[i], (uintptr_t)bufferPhysicalAddress[i], mBufferSize[i], mBufferSize[i]);    
+        printf("[udma buffer %d] address: 0x%lx physical address: 0x%lx size: %u(%#x)\n", i, (uintptr_t)mBufferAddress[i], (uintptr_t)mBufferPhysicalAddress[i], mBufferSize[i], mBufferSize[i]);    
     }
 }
 
-void udma_c::dumpUdmaBufferContent(uint32_t bufferIndex, uint32_t offset, uint32_t length)
+void udma_c::dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t length)
 {
-    NVME_DBG_ASSERT((bufferIndex<DEFAULT_UDMA_BUFFER_COUNT), "bufferIndex out of range!")
-    NVME_DBG_ASSERT((offset<getBufferSize(bufferIndex)), "offset out of range!")
-    NVME_DBG_ASSERT(((offset+length)<=getBufferSize(bufferIndex)), "length out of range!")
+    NVME_DBG_ASSERT((udmaId<DEFAULT_UDMA_BUFFER_COUNT), "udmaId out of range!")
+    NVME_DBG_ASSERT((offset<getBufferSize(udmaId)), "offset out of range!")
+    NVME_DBG_ASSERT(((offset+length)<=getBufferSize(udmaId)), "length out of range!")
 
-    uint8_t* bufferPtr = (uint8_t*)getBufferAddress(bufferIndex);
+    uint8_t* bufferPtr = (uint8_t*)getBufferAddress(udmaId);
     
     for(uint32_t i=0; i<length; i++)
     {
         if(i%16==0)
         {
-            printf("\n[udma buffer %d] 0x%lx: ", bufferIndex, (uintptr_t)(bufferPtr+offset+i));
+            printf("\n[udma buffer %d] 0x%lx: ", udmaId, (uintptr_t)(bufferPtr+offset+i));
         }
         printf("%02x ", *(bufferPtr+offset+i));
     }
     printf("\n");
+}
+
+void udma_c::writeBuffer(uint32_t udmaId, uint32_t offset, uint32_t length, uint32_t dwordData)
+{
+    NVME_DBG_ASSERT((udmaId<DEFAULT_UDMA_BUFFER_COUNT), "udmaId out of range!")
+    NVME_DBG_ASSERT((offset<getBufferSize(udmaId)), "offset out of range!")
+    NVME_DBG_ASSERT(((offset+length)<=getBufferSize(udmaId)), "length out of range!")
+
+    uint32_t* bufferPtr = (uint32_t*)getBufferAddress(udmaId);
+    
+    for(uint32_t i=0; i<length; i++)
+    {
+        *(bufferPtr+offset+i) = dwordData;
+    }
 }
