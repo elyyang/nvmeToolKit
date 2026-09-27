@@ -143,16 +143,4 @@ void udma_c::dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t le
     printf("\n");
 }
 
-void udma_c::writeBuffer(uint32_t udmaId, uint32_t offset, uint32_t length, uint32_t dwordData)
-{
-    NVME_DBG_ASSERT((udmaId<DEFAULT_UDMA_BUFFER_COUNT), "udmaId out of range!")
-    NVME_DBG_ASSERT((offset<getBufferSize(udmaId)), "offset out of range!")
-    NVME_DBG_ASSERT(((offset+length)<=getBufferSize(udmaId)), "length out of range!")
 
-    uint32_t* bufferPtr = (uint32_t*)getBufferAddress(udmaId);
-    
-    for(uint32_t i=0; i<length; i++)
-    {
-        *(bufferPtr+offset+i) = dwordData;
-    }
-}

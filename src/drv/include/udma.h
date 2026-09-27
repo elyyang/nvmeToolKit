@@ -65,5 +65,7 @@ class udma_c
 
         void dumpUdmaBufferInformation();
         void dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t length);
-        void writeBuffer(uint32_t udmaId, uint32_t offset, uint32_t length, uint32_t dwordData);
+        void writeBuffer8(uint32_t udmaId, uint32_t offset, uint32_t length, uint8_t data);
+        void writeBuffer16(uint32_t udmaId, uint32_t offset, uint32_t length, uint16_t data);
+        void writeBuffer32(uint32_t udmaId, uint32_t offset, uint32_t length, uint32_t data);
 };

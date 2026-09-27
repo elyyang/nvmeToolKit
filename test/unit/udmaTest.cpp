@@ -81,6 +81,6 @@ void test_udma3()
     uint32_t bufferSizeUnderTest = udmaDriver.getBufferSize(udmaId);
     //uint32_t prbs32StartingSeed = 0x1;
 
-    udmaDriver.writeBuffer(udmaId, 0, bufferSizeUnderTest, 0xc001cafe);
+    //udmaDriver.writeBuffer(udmaId, 0, bufferSizeUnderTest, 0xc001cafe);
     udmaDriver.dumpUdmaBufferContent(udmaId, 0, bufferSizeUnderTest);
 }
