@@ -64,5 +64,5 @@ class udma_c
         uint32_t getBufferSize(uint32_t udmaId);
         void clearUdmaBuffer(uint32_t udmaId);
         void dumpUdmaBufferInformation();
-        void dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t length);
+        void dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t length);        
 };

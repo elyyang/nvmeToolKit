@@ -60,6 +60,7 @@ void menuInit()
     g_tests_subMenu.addItem(test_wdata8, "write byte data test");
     g_tests_subMenu.addItem(test_wdata16, "write word data test");
     g_tests_subMenu.addItem(test_wdata32, "write double word data test");
+    g_tests_subMenu.addItem(test_wdata, "write data test");
 
     g_pcieUtil_subMenu.addDescription("pcie utilities");
     g_pcieUtil_subMenu.addItem(demo_pcieCfgSpace, "pcie config space dump");

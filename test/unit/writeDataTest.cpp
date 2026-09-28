@@ -32,8 +32,8 @@
 *********************************************************************************************/
 
 #include "writeData.h"
+#include "displayData.h"
 #include "udma.h"
-
 
 void test_wdata8()
 {
@@ -71,4 +71,19 @@ void test_wdata32()
     udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x1100);
 }
 
-#pragma message("add writeData unit test")
+#pragma message("update writeData unit test to be more comprehensive")
+void test_wdata()
+{
+    udma_c& udmaDriver = udma_c::getInstance();
+
+    uint32_t udmaId = 0;
+    uintptr_t destAddr = udmaDriver.getBufferAddress(udmaId);
+ 
+    const char* data = "hello world!";
+
+
+    udmaDriver.clearUdmaBuffer(udmaId);
+    writeData(destAddr, 0, 12*8, data);    
+    displayData((void*)destAddr, 16, 0);
+    displayDataChar((void*)destAddr, 16, 0);
+}
