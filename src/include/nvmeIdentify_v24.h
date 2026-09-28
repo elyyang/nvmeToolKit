@@ -499,15 +499,27 @@ typedef union __attribute__((packed, aligned (4))) identifyController_t
         uint32_t    rtd3EntryLatency;                                           //RTD3E;                    //byte(s) 88-91    
         oaes_t      optionalAysnchronouseEventsSupported;                       //OAES;                     //byte(s) 92-95    
         ctratt_t    controllerAttributes;                                       //CTRATT;                   //byte(s) 96-99
-        rrls_t      readRecoveryLevelsSupported;                                //RRLS;                     //byte(s) 100-101
-        uint8_t     section1Reserved0[9];                                       //reserved                  //byte(s) 110-102
+        rrls_t      readRecoveryLevelsSupported;                                //RRLS;                     //byte(s) 100-101                
+        bpcap_t     bootPartitionCapabilities;                                  //BPCAP;                    //byte(s) 102
+        chsi_t      cxlHdmSupportInformation;                                   //CHSI;                     //byte(s) 103
+        uint32_t    nvmSubsystemShutdownLatency;                                //NSSL;                     //byte(s) 104-107        
+        uint8_t     section1Reserved0[2];                                       //reserved                  //byte(s) 108-109
+        plsi_t      powerLossSignalingInformation;                              //PLSI;                     //byte(s) 110
         uint8_t     controllerType                                      : 8;    //CNTRLTYPE                 //byte(s) 111
         uint8_t     fruGloballyUniqueId[16];                                    //FGUID[16];                //byte(s) 112-127
         uint32_t    commandRetryDelayTimer1                             : 16;   //CRDT1                     //byte(s) 128-129
         uint32_t    commandRetryDelayTimer2                             : 16;   //CRDT2                     //byte(s) 130-131
         uint32_t    commandRetryDelayTimer3                             : 16;   //CRDT3                     //byte(s) 132-133
-        uint8_t     section1Reserved1[106];                                     //reserved;                 //byte(s) 134-239
-        uint8_t     managementInterface[16];                                    //managementInterface[16];  //byte(s) 240-255
+
+        crcap_t     controllerReachabilityCapabilities;                         //CRCAP;                    //byte(s) 134 
+        uint8_t     controllerInstanceUniquifier;                               //CIU;                     `//byte(s) 135
+        uint64_t    controllerInstanceRandomNumber;                             //CIRN;                     //byte(s) 136-143
+        uint8_t     section1Reserved1[96];                                      //reserved;                 //byte(s) 144-239
+        uint8_t     managementInterface[13];                                    //managementInterface[16];  //byte(s) 240-252
+        nvmsr_t     nvmSubsystemReport;                                         //NVMSR;                    //byte(s) 253
+        vwci_t      vdpWriteCycleInformation;                                   //VWCI;                     //byte(s) 254
+        mec_t       managementEndpointCapabilities;                             //MEC;                      //byte(s) 255
+
         //------------------------------------------------------------------------------------------------------------------
         //Section 2 - Admin Command Set Attributes
         //bytes 256-511 (256 bytes)
@@ -522,18 +534,18 @@ typedef union __attribute__((packed, aligned (4))) identifyController_t
         avscc_t     adminVendorSpecificCommandConfig;                           //AVSCC;                    //byte(s) 264
         apsta_t     autonomousPowerStateTransitionAttributes;                   //APSTA;                    //byte(s) 265
         uint32_t    warningCompositeTemperatureThreshold                : 16;   //WCTEMP                    //byte(s) 266-267
-        uint32_t    criticalCompositeTemperatureThreshold               : 16;   //CCTEMP                    //byte(s) 268-269    
+        uint32_t    criticalCompositeTemperatureThreshold               : 16;   //CCTEMP                    //byte(s) 268-269
         uint32_t    maximumTimeForFirmwareActivation                    : 16;   //MTFA                      //byte(s) 270-271
         uint32_t    hostMemoryBufferPreferredSize;                              //HMPRE;                    //byte(s) 272-275
-        uint32_t    hostMemoryBufferMinimumSize;                                //HMMIN;                    //byte(s) 276-279
+        uint32_t    hostMemoryBufferMinimumSize;                                //HMMIN;                    //byte(s) 276-279        
         uint64_t    totalNVMCapacity[2];                                        //TNVMCAP[2];               //byte(s) 280-295    
-        uint64_t    unallocatedNvmCapacity[2];                                  //UNVMCAP[2];               //byte(s) 296-311
+        uint64_t    unallocatedNvmCapacity[2];                                  //UNVMCAP[2];               //byte(s) 296-311        
         rpmbs_t     replayProtectedMemoryBlockSupport;                          //RPMBS;                    //byte(s) 312-315
         uint32_t    extendedDeviceSelfTestMinutes                       : 16;   //EDSTT                     //byte(s) 316-317
         uint32_t    deviceSelfTestOptions                               : 8;    //DSTO                      //byte(s) 318
         uint32_t    firmwareUpdateGranularity                           : 8;    //FWUG                      //byte(s) 319    
-        uint32_t    keepAliveSupport                                    : 16;   //KAS                       //byte(s) 320-321    
-        uint32_t    hostControlledThermalManagementAttributes           : 16;   //HCTMA                     //byte(s) 322-323
+        uint32_t    keepAliveSupport                                    : 16;   //KAS                       //byte(s) 320-321
+        hctma_t     hostControlledThermalManagementAttributes;                  //HCTMA                     //byte(s) 322-323
         uint32_t    minThermalManagementTemperature                     : 16;   //MNTMT                     //byte(s) 324-325
         uint32_t    maxThermalManagementTemperature                     : 16;   //MXTMT                     //byte(s) 326-327    
         sanicap_t   sanitizeCapabilities;                                       //SANICAP;                  //byte(s) 328-331    
@@ -541,11 +553,12 @@ typedef union __attribute__((packed, aligned (4))) identifyController_t
         uint32_t    hostMemoryMaximumDescriptorsEntries                 : 16;   //HMMAXD                    //byte(s) 336-337
         uint32_t    nvmSetidentifierMaximum                             : 16;   //NSETIDMAX                 //byte(s) 338-339
         uint32_t    enduranceGroupIdentifierMaximum                     : 16;   //ENDGIDMAX                 //byte(s) 340-341
-        uint32_t    anaTransitionTime                                   : 8;    //ANATT                     //byte(s) 342
-        uint32_t    asymmetricNamespaceAccessCapabilities               : 8;    //ANACAP                    //byte(s) 343
+        uint32_t    anaTransitionTime                                   : 8;    //ANATT                     //byte(s) 342        
+        anacap_t    asymmetricNamespaceAccessCapabilities;                      //ANACAP                    //byte(s) 343        
         uint32_t    anaGroupIdentifierMaximum;                                  //ANAGRPMAX;                //byte(s) 344-347
         uint32_t    numberOfAnaGroupIdentifiers;                                //NANAGRPID;                //byte(s) 348-351
         uint32_t    persistentEventLogSize;                                     //PELS;                     //byte(s) 352-355
+        
         uint8_t     section2Reserved0[156];                                     //reserved;                 //byte(s) 356-511
         //------------------------------------------------------------------------------------------------------------------
         //Section 3 - NVM Command Set Attributes
