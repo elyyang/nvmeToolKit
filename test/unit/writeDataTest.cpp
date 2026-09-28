@@ -31,38 +31,44 @@
 *
 *********************************************************************************************/
 
-#pragma once
+#include "writeData.h"
+#include "udma.h"
 
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/mman.h>
 
-#define DEFAULT_UDMA_BUFFER_COUNT   (8)
-
-class udma_c
+void test_wdata8()
 {
-    private:
+    udma_c& udmaDriver = udma_c::getInstance();
 
-        udma_c();        
-        ~udma_c();
-        
-        int mUdmaBuffer_fd[DEFAULT_UDMA_BUFFER_COUNT];
-        int mUdmaBufferPhysicalAddress_fd[DEFAULT_UDMA_BUFFER_COUNT];        
-        void* mBufferAddress[DEFAULT_UDMA_BUFFER_COUNT];
-        void* mBufferPhysicalAddress[DEFAULT_UDMA_BUFFER_COUNT];
-        uint32_t mBufferSize[DEFAULT_UDMA_BUFFER_COUNT];
+    uint32_t udmaId = 0;
+    uintptr_t destAddr = udmaDriver.getBufferAddress(udmaId);
+    
+    udmaDriver.clearUdmaBuffer(udmaId);
+    writeData8(destAddr, 0, 0x100, 0xab);     
+    udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x200);
+}
 
-    public:
+void test_wdata16()
+{
+    udma_c& udmaDriver = udma_c::getInstance();
 
-        static udma_c& getInstance();      
+    uint32_t udmaId = 0;
+    uintptr_t destAddr = udmaDriver.getBufferAddress(udmaId);
+    
+    udmaDriver.clearUdmaBuffer(udmaId);
+    writeData16(destAddr, 0, 0x100, 0xaaaa);     
+    udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x200);
+}
 
-        uintptr_t getBufferAddress(uint32_t udmaId);        
-        uintptr_t getBufferPhysicalAddress(uint32_t udmaId);
-        uint32_t getBufferSize(uint32_t udmaId);
-        void clearUdmaBuffer(uint32_t udmaId);
-        void dumpUdmaBufferInformation();
-        void dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t length);
-};
+void test_wdata32()
+{
+    udma_c& udmaDriver = udma_c::getInstance();
+
+    uint32_t udmaId = 0;
+    uintptr_t destAddr = udmaDriver.getBufferAddress(udmaId);
+    
+    udmaDriver.clearUdmaBuffer(udmaId);
+    writeData32(destAddr, 0, 0x1000, 0xaabbccdd);    
+    udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x1100);
+}
+
+#pragma message("add writeData unit test")

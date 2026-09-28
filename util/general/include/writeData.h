@@ -31,38 +31,9 @@
 *
 *********************************************************************************************/
 
-#pragma once
+#include "stdint.h"
 
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/mman.h>
-
-#define DEFAULT_UDMA_BUFFER_COUNT   (8)
-
-class udma_c
-{
-    private:
-
-        udma_c();        
-        ~udma_c();
-        
-        int mUdmaBuffer_fd[DEFAULT_UDMA_BUFFER_COUNT];
-        int mUdmaBufferPhysicalAddress_fd[DEFAULT_UDMA_BUFFER_COUNT];        
-        void* mBufferAddress[DEFAULT_UDMA_BUFFER_COUNT];
-        void* mBufferPhysicalAddress[DEFAULT_UDMA_BUFFER_COUNT];
-        uint32_t mBufferSize[DEFAULT_UDMA_BUFFER_COUNT];
-
-    public:
-
-        static udma_c& getInstance();      
-
-        uintptr_t getBufferAddress(uint32_t udmaId);        
-        uintptr_t getBufferPhysicalAddress(uint32_t udmaId);
-        uint32_t getBufferSize(uint32_t udmaId);
-        void clearUdmaBuffer(uint32_t udmaId);
-        void dumpUdmaBufferInformation();
-        void dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t length);
-};
+void writeData8(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const uint8_t data);
+void writeData16(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const uint16_t data);
+void writeData32(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const uint32_t data);
+void writeData(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const char* data); 

@@ -72,15 +72,4 @@ void test_udma2()
     udmaDriver.dumpUdmaBufferContent(udmaId, 0, bufferSizeUnderTest+0x100);
 }
 
-void test_udma3()
-{
-    udma_c& udmaDriver = udma_c::getInstance();
-
-    uint32_t udmaId=0;        
-    //uintptr_t bufferAddressUnderTest = udmaDriver.getBufferAddress(udmaId);
-    uint32_t bufferSizeUnderTest = udmaDriver.getBufferSize(udmaId);
-    //uint32_t prbs32StartingSeed = 0x1;
-
-    //udmaDriver.writeBuffer(udmaId, 0, bufferSizeUnderTest, 0xc001cafe);
-    udmaDriver.dumpUdmaBufferContent(udmaId, 0, bufferSizeUnderTest);
-}
+#pragma message("add udma clear buffer test")

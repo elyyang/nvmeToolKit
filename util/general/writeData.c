@@ -31,38 +31,49 @@
 *
 *********************************************************************************************/
 
-#pragma once
+#include "stdint.h"
 
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/mman.h>
-
-#define DEFAULT_UDMA_BUFFER_COUNT   (8)
-
-class udma_c
+void writeData8(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const uint8_t data) 
 {
-    private:
+    uint8_t* bufferPtr = (uint8_t*)destinationAddress + offset;
+    
+    for(uint32_t i=0; i<(size/sizeof(uint8_t)); i++)
+    {
+        *(bufferPtr) = data;
+        bufferPtr++;
+    }
+}
 
-        udma_c();        
-        ~udma_c();
-        
-        int mUdmaBuffer_fd[DEFAULT_UDMA_BUFFER_COUNT];
-        int mUdmaBufferPhysicalAddress_fd[DEFAULT_UDMA_BUFFER_COUNT];        
-        void* mBufferAddress[DEFAULT_UDMA_BUFFER_COUNT];
-        void* mBufferPhysicalAddress[DEFAULT_UDMA_BUFFER_COUNT];
-        uint32_t mBufferSize[DEFAULT_UDMA_BUFFER_COUNT];
+void writeData16(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const uint16_t data) 
+{
+    uint16_t* bufferPtr = (uint16_t*)destinationAddress + offset;
 
-    public:
+    for(uint32_t i=0; i<(size/sizeof(uint16_t)); i++)
+    {
+        *(bufferPtr) = data;
+        bufferPtr++;
+    }
+}
 
-        static udma_c& getInstance();      
+void writeData32(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const uint32_t data) 
+{
+    uint32_t* bufferPtr = (uint32_t*)destinationAddress + offset;
+    
+    for(uint32_t i=0; i<(size/sizeof(uint32_t)); i++)
+    {
+        *(bufferPtr) = data;
+        bufferPtr++;
+    }
+}
 
-        uintptr_t getBufferAddress(uint32_t udmaId);        
-        uintptr_t getBufferPhysicalAddress(uint32_t udmaId);
-        uint32_t getBufferSize(uint32_t udmaId);
-        void clearUdmaBuffer(uint32_t udmaId);
-        void dumpUdmaBufferInformation();
-        void dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t length);
-};
+void writeData(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const char* data) 
+{
+    uint8_t* bufferPtr = (uint8_t*)destinationAddress + offset;
+    
+    for(uint32_t i=0; i<(size/sizeof(char*)); i++)
+    {
+        *(bufferPtr) = *(data);
+        bufferPtr++;
+        data++;
+    }
+}

@@ -116,6 +116,11 @@ uint32_t udma_c::getBufferSize(uint32_t udmaId)
     return mBufferSize[udmaId];
 }
 
+void udma_c::clearUdmaBuffer(uint32_t udmaId)
+{
+    memset((void*)getBufferAddress(udmaId), 0, getBufferSize(udmaId));
+}
+
 void udma_c::dumpUdmaBufferInformation()
 {   
     for(uint32_t i=0; i<DEFAULT_UDMA_BUFFER_COUNT; i++)
@@ -142,5 +147,3 @@ void udma_c::dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t le
     }
     printf("\n");
 }
-
-

@@ -35,4 +35,6 @@
 
 void test_udma1();
 void test_udma2();
-void test_udma3();
+void test_wdata8();
+void test_wdata16();
+void test_wdata32();
