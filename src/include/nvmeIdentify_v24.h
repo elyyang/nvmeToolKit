@@ -295,7 +295,7 @@ typedef struct rmdca_t
     uint16_t    restoreDefaultNvmSubsystemConfigurationSupported        : 1;    //bit  0
     uint16_t    restoreDefaultNamespaceConfigurationSupported           : 1;    //bit  1
     uint16_t    restoreDefaultCapacityManagementConfigurationSupported  : 1;    //bit  2
-    uint16_t    _reserved                                               :13;    //bits 3-15
+    uint16_t    _reserved                                               : 13;   //bits 3-15
 }rmdca_t;
 
 typedef struct tmpthha_t
@@ -306,8 +306,8 @@ typedef struct tmpthha_t
 
 typedef struct mupa_t
 {
-    uint8_t     maximumUnlimitedPowerScale                  : 2;    //bits 0-1
-    uint8_t     _reserved                                   : 6;    //bits 2-7
+    uint8_t     maximumUnlimitedPowerScale                   : 2;    //bits 0-1
+    uint8_t     _reserved                                    : 6;    //bits 2-7
 }mupa_t;
 
 typedef struct cdpa_t
@@ -327,7 +327,7 @@ typedef struct ensa_t
 {
     uint8_t     exportedNvmSubsystemTemplateSupport          : 1;    //bit  0
     uint8_t     exportedNvmSubsystemMigrationSupport         : 1;    //bit  1
-    uint8_t     _reserved                                     : 6;    //bits 2-7
+    uint8_t     _reserved                                    : 6;    //bits 2-7
 }ensa_t;
 
 typedef struct endsfs_t
@@ -510,7 +510,6 @@ typedef union __attribute__((packed, aligned (4))) identifyController_t
         uint32_t    commandRetryDelayTimer1                             : 16;   //CRDT1                     //byte(s) 128-129
         uint32_t    commandRetryDelayTimer2                             : 16;   //CRDT2                     //byte(s) 130-131
         uint32_t    commandRetryDelayTimer3                             : 16;   //CRDT3                     //byte(s) 132-133
-
         crcap_t     controllerReachabilityCapabilities;                         //CRCAP;                    //byte(s) 134 
         uint8_t     controllerInstanceUniquifier;                               //CIU;                     `//byte(s) 135
         uint64_t    controllerInstanceRandomNumber;                             //CIRN;                     //byte(s) 136-143
@@ -544,7 +543,7 @@ typedef union __attribute__((packed, aligned (4))) identifyController_t
         uint32_t    extendedDeviceSelfTestMinutes                       : 16;   //EDSTT                     //byte(s) 316-317
         uint32_t    deviceSelfTestOptions                               : 8;    //DSTO                      //byte(s) 318
         uint32_t    firmwareUpdateGranularity                           : 8;    //FWUG                      //byte(s) 319    
-        uint32_t    keepAliveSupport                                    : 16;   //KAS                       //byte(s) 320-321
+        uint32_t    keepAliveSupport                                    : 16;   //KAS                       //byte(s) 320-321        
         hctma_t     hostControlledThermalManagementAttributes;                  //HCTMA                     //byte(s) 322-323
         uint32_t    minThermalManagementTemperature                     : 16;   //MNTMT                     //byte(s) 324-325
         uint32_t    maxThermalManagementTemperature                     : 16;   //MXTMT                     //byte(s) 326-327    
@@ -558,8 +557,34 @@ typedef union __attribute__((packed, aligned (4))) identifyController_t
         uint32_t    anaGroupIdentifierMaximum;                                  //ANAGRPMAX;                //byte(s) 344-347
         uint32_t    numberOfAnaGroupIdentifiers;                                //NANAGRPID;                //byte(s) 348-351
         uint32_t    persistentEventLogSize;                                     //PELS;                     //byte(s) 352-355
+        uint32_t    domainIdentifier                                    :16;    //DID;                      //byte(s) 356-357
+        kpioc_t     keyPerIoCapabilities;                                       //KPIOC;                    //byte(s) 358
+        uint8_t     section2Reserved0;                                                                      //byte(s) 359
+        uint32_t    maxProcessingTimeForFirmwareActivationWithoutReset  :16;    //MPTFAWR;                  //byte(s) 360-361        
         
-        uint8_t     section2Reserved0[156];                                     //reserved;                 //byte(s) 356-511
+        rmdca_t     restoreManufacturingConfigurationAttributes;                //RMDCA;                    //byte(s) 362-363        
+        uint8_t     section2Reserved1[4];                                       //reserved;                 //byte(s) 364-367        
+
+        uint8_t     maxEnduranceGroupCapacity[16];                              //MEGCAP;                   //byte(s) 368-383
+        tmpthha_t   temperatureThresholdHysteresisAttributes;                   //TMPTHHA;                  //byte(s) 384
+        mupa_t      maxmimumUnlimitedPowerAttributes;                           //MUPTA;                    //byte(s) 385
+        uint32_t    commandQuiesceTime                                  :16;    //CQT;                      //byte(s) 386-387
+        cdpa_t      configurableDevicePersonalityAttributes;                    //CDPA;                     //byte(s) 388-389
+        uint32_t    maxUnlimitedPower                                   :16;    //MUP;                      //byte(s) 390-391
+        ipmsr_t     intervalPowerMeasurementSampleRate;                         //IPMSR;                    //byte(s) 392-393
+        uint32_t    maxStopMeasurementTime                              :16;    //MSMT;                     //byte(s) 394-395
+        uint32_t    maxNumberOfExportedNvmSubsystems                    :16;    //MNENS;                    //byte(s) 396-397
+        uint32_t    maxNumberOfExportedControllersPerExportedNvmSubsys  :16;    //MNECPENS;                 //byte(s) 398-399
+        uint32_t    maxExportedNvmSubsystemNumberOfNamespaces;                  //MENSNN;                   //byte(s) 400-403
+        ensa_t      exportedNvmSubsystemAttributes;                             //ENSA;                     //byte(s) 404
+        endsfs_t    exportedNamespaceDataStructureFormatsSupported;             //ENDSFS;                   //byte(s) 405
+        uint32_t    voltageSensor1;                                             //VSEN1                     //byte(s) 406-409
+        uint32_t    voltageSensor2;                                             //VSEN2                     //byte(s) 410-413
+        uint32_t    voltageSensor3;                                             //VSEN3                     //byte(s) 414-417
+        uint32_t    voltageSensor4;                                             //VSEN4                     //byte(s) 418-421
+        uint32_t    maximumStopVoltageMeasurementTime                   :16;    //MSVMT;                    //byte(s) 422-423
+        uint8_t     section2Reserved2[88];                                      //reserved;                 //byte(s) 424-511
+
         //------------------------------------------------------------------------------------------------------------------
         //Section 3 - NVM Command Set Attributes
         //bytes 512-703 (192 bytes)
