@@ -42,7 +42,9 @@
 #endif // __cplusplus
 
 /********************************************************************
-* NVMe 2.4 Identify
+* NVM-Express-Base-Specification-Revision-2.4-Ratified-2026.07.31
+* Identify Controller Data Structure (CNS 01h)
+* section 5.2.14.2.1
 *********************************************************************/
 
 #define NVME_IDENTIFY_DATA_SIZE_IN_DWORDS    (1024)

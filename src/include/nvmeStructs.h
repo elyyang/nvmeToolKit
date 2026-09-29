@@ -47,6 +47,7 @@
 #include "nvmeCommand_v24.h"
 #include "nvmeControllerConfig_v24.h"
 #include "nvmeIdentify_v24.h"
+#include "nvmeNamespace_v24.h"
 
 #else 
 
