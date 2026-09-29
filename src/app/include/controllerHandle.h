@@ -43,8 +43,7 @@ class controllerHandle_c
 
         controllerHandle_c();
         ~controllerHandle_c();
-
-        uint32_t mIoQueuePairCount;
+        
         uint64_t mAdminSubmissionQueueBaseAddress;
         uint64_t mAdminCompletionQueueBaseAddress;
         uint64_t mAdminDataBaseAddress;
