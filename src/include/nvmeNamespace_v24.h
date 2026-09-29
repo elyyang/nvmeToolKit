@@ -155,6 +155,13 @@ typedef struct lbaFormat_t
     uint32_t reserved                           : 6;   //bit 32:26
 }lbaFormat_t;
 
+typedef struct kpios_t
+{
+    uint8_t keyPerIoEnabledInNamespace          : 1;    //bit  0
+    uint8_t keyPerIoSupportedInNamespace        : 1;    //bit  1
+    uint8_t reserved                            : 6;    //bits 2-7
+}kpios_t;
+
 typedef union __attribute__((packed, aligned (4))) identifyNamespace_t
 {
     uint32_t mDword[NVME_IDENTIFY_DATA_SIZE_IN_DWORDS];
@@ -187,16 +194,16 @@ typedef union __attribute__((packed, aligned (4))) identifyNamespace_t
         uint32_t    namespacePreferredDeallocatedGranularity    :16;    //NPDG                     //Byte(s) 68-69
         uint32_t    namespacePreferredDeallocatedAlignment      :16;    //NPDA                     //Byte(s) 70-71
         uint32_t    namespaceOptimalWriteSize                   :16;    //NOWS                     //Byte(s) 72-73
-
-
-
-        uint8_t     reserved0[18];                                      //reserved0[18];           //Byte(s) 74-91
-
-
-
-        
+        uint32_t    maxSingleSourceRangeLength                  :16;    //MSSRL                    //Byte(s) 74-75
+        uint32_t    maxCopyLength;                                      //MCL                      //Byte(s) 76-79
+        uint32_t    maxSourceRangeCount                         :8;     //MSRC                     //Byte(s) 80
+        kpios_t     keyPerIoStatus;                                     //KPIOS                    //Byte(s) 81
+        uint32_t    numberOfUniqueAttributeLbaFormats           :8;     //NULBAF                   //Byte(s) 82
+        uint32_t    _reserved0                                  :8;                                //Byte(s) 83
+        uint32_t    keyPerIoDataAccessAlignmentAndGranularity;          //KPIODAAG                 //Byte(s) 84-87
+        uint8_t     _reserved1[4];                                                                 //Byte(s) 88-91
         uint32_t    anaGroupId;                                         //ANAGRPID;                //Byte(s) 92-95
-        uint8_t     reserved1[3];                                       //reserved1[3];            //Byte(s) 96-98    
+        uint8_t     _reserved2[3];                                                                 //Byte(s) 96-98    
         nsattr_t    namespaceAttributes;                                //NSATTR;                  //Byte(s) 99
         uint32_t    nvmSetIdentifier                            :16;    //NVMSETID                 //Byte(s) 100-101
         uint32_t    enduranceGroupIdentifier                    :16;    //ENGID                    //Byte(s) 102-103    
