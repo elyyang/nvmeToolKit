@@ -53,7 +53,7 @@
 
 #if ENABLE_NVME_DBG_ASSERT
 
-#define NVME_DBG_ASSERT(condition, message)                              _assert_condition((!condition), message)
+#define NVME_DBG_ASSERT(condition, message)                              _assert_condition((!(condition)), message)
 #define NVME_DBG_ASSERT_IF_TRUE(condition, message)                      _assert_condition((condition), message)
 #define NVME_DBG_ASSERT_IF_EQUAL(actual, expected, message)              _assert_condition((actual==expected), message)
 #define NVME_DBG_ASSERT_IF_NOT_EQUAL(actual, expected, message)          _assert_condition((actual!=expected), message)
