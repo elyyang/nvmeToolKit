@@ -79,6 +79,7 @@ DEFINES +=	-D ENABLE_ASSERT_LIB=1
 
 # Compiler
 CC = g++
+#CC = clang++
 
 # Compile Flags
 CFLAGS =	-std=c++2a
@@ -86,6 +87,7 @@ CFLAGS += 	-Wall
 CFLAGS += 	-Werror
 CFLAGS += 	-Wextra
 CFLAGS +=	-g
+CFLAGS +=	-x c++    # compile .c sources as C++ (matches g++ behavior, silences clang deprecation)
 
 ##############################################################################################################
 
