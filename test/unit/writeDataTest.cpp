@@ -44,7 +44,7 @@ void test_wdata8()
     
     udmaDriver.clearUdmaBuffer(udmaId);
     writeData8(destAddr, 0, 0x100, 0xab);     
-    udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x200);
+    udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x200, 4);
 }
 
 void test_wdata16()
@@ -56,7 +56,7 @@ void test_wdata16()
     
     udmaDriver.clearUdmaBuffer(udmaId);
     writeData16(destAddr, 0, 0x100, 0xaaaa);     
-    udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x200);
+    udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x200, 4);
 }
 
 void test_wdata32()
@@ -68,7 +68,7 @@ void test_wdata32()
     
     udmaDriver.clearUdmaBuffer(udmaId);
     writeData32(destAddr, 0, 0x1000, 0xaabbccdd);    
-    udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x1100);
+    udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x1100, 4);
 }
 
 #pragma message("update writeData unit test to be more comprehensive")
@@ -85,8 +85,8 @@ void test_wdata()
     udmaDriver.clearUdmaBuffer(udmaId);
     writeData(destAddr, 0, size, data);    
     
-    displayDataChar((void*)destAddr, size, 0);
-    displayDataChar((void*)destAddr, size, 8);
-    displayDataChar((void*)destAddr, size, 16);
-    displayData((void*)destAddr, size, 16);
+    displayDataChar(destAddr, size, 0);
+    displayDataChar(destAddr, size, 8);
+    displayDataChar(destAddr, size, 16);
+    displayData(destAddr, size, 16);
 }

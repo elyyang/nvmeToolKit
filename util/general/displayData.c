@@ -35,8 +35,7 @@
 #include "stdint.h"
 #include "assertLib.h"
 
-#pragma message("need clean up displayData and displayDataChar functions - ported from legacy")
-void displayData(void* address, uint32_t nBytes, uint32_t bytePerLine)
+void displayData(uintptr_t address, uint32_t nBytes, uint32_t bytePerLine)
 {
     NVME_DBG_ASSERT((bytePerLine%4)==0, "bytePerLine need to be dword aligned!")
 
@@ -44,7 +43,7 @@ void displayData(void* address, uint32_t nBytes, uint32_t bytePerLine)
     uint32_t line;
     
     printf("===========================================\n");
-    printf("base address:   %p \n", address);    
+    printf("base address:   0x%lx \n", address);    
     printf("nbytes:         %d \n", nBytes);
     printf("===========================================\n");
     
@@ -65,7 +64,7 @@ void displayData(void* address, uint32_t nBytes, uint32_t bytePerLine)
     for(uint32_t j = 0; j<line; j++)
     {
         offset = bytePerLine * j;        
-        printf("%4d \t 0x%08x \t ", j, offset);
+        printf("%4d \t 0x%08lx \t ", j, address+offset);
         
         for(uint32_t i = 0; i < bytePerLine; i++)
         {   
@@ -75,7 +74,7 @@ void displayData(void* address, uint32_t nBytes, uint32_t bytePerLine)
     } 
 }
 
-void displayDataChar(void* address, uint32_t nBytes, uint32_t bytePerLine)
+void displayDataChar(uintptr_t address, uint32_t nBytes, uint32_t bytePerLine)
 {
     NVME_DBG_ASSERT((bytePerLine%4)==0, "bytePerLine need to be dword aligned!")
 
@@ -83,7 +82,7 @@ void displayDataChar(void* address, uint32_t nBytes, uint32_t bytePerLine)
     uint32_t line;
     
     printf("===========================================\n");
-    printf("base address:   %p \n", address);    
+    printf("base address:   0x%lx \n", address);    
     printf("nbytes:         %d \n", nBytes);
     printf("===========================================\n");
     
@@ -104,7 +103,7 @@ void displayDataChar(void* address, uint32_t nBytes, uint32_t bytePerLine)
     for(uint32_t j = 0; j<line; j++)
     {
         offset = bytePerLine * j;        
-        printf("%4d \t 0x%08x \t ", j, offset);
+        printf("%4d \t 0x%08lx \t ", j, address+offset);
         
         for(uint32_t i = 0; i < bytePerLine; i++)
         {   

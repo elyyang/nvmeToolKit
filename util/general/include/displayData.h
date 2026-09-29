@@ -33,5 +33,5 @@
 
 #include "stdint.h"
 
-void displayData(void* address, uint32_t nBytes, uint32_t bytePerLine);
-void displayDataChar(void* address, uint32_t nBytes, uint32_t bytePerLine);
+void displayData(uintptr_t address, uint32_t nBytes, uint32_t bytePerLine);
+void displayDataChar(uintptr_t address, uint32_t nBytes, uint32_t bytePerLine);

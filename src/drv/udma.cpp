@@ -129,23 +129,31 @@ void udma_c::dumpUdmaBufferInformation()
     }
 }
 
-
 #pragma message("update this to be more flexible")
-void udma_c::dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t length)
+
+void udma_c::dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t nBytes, uint32_t bytePerLine)
 {
     NVME_DBG_ASSERT((udmaId<DEFAULT_UDMA_BUFFER_COUNT), "udmaId out of range!")
     NVME_DBG_ASSERT((offset<getBufferSize(udmaId)), "offset out of range!")
-    NVME_DBG_ASSERT(((offset+length)<=getBufferSize(udmaId)), "length out of range!")
+    NVME_DBG_ASSERT(((offset+nBytes)<=getBufferSize(udmaId)), "length out of range!")
 
     uint8_t* bufferPtr = (uint8_t*)getBufferAddress(udmaId);
     
-    for(uint32_t i=0; i<length; i++)
+    if(!bytePerLine)
     {
-        if(i%16==0)
+        bytePerLine = 16;
+    }
+
+
+
+    for(uint32_t i=0; i < nBytes; i++)
+    {
+        if( i % bytePerLine == 0)
         {
-            printf("\n[udma buffer %d] 0x%lx: ", udmaId, (uintptr_t)(bufferPtr+offset+i));
+            printf("\n[udma buffer %d] 0x%lx: ", udmaId, (uintptr_t)(bufferPtr + offset + i));
         }
-        printf("%02x ", *(bufferPtr+offset+i));
+        printf("%02x ", *(bufferPtr + offset + i));
     }
     printf("\n");
 }
+
