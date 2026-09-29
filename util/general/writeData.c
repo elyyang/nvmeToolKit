@@ -70,7 +70,7 @@ void writeData(const uintptr_t destinationAddress, const uint32_t offset, const 
 {
     uint8_t* bufferPtr = (uint8_t*)destinationAddress + offset;
     
-    for(uint32_t i=0; i<(size/sizeof(char*)); i++)
+    for(uint32_t i=0; i<(size/sizeof(char)); i++)
     {
         *(bufferPtr) = *(data);
         bufferPtr++;

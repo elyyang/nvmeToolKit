@@ -79,11 +79,14 @@ void test_wdata()
     uint32_t udmaId = 0;
     uintptr_t destAddr = udmaDriver.getBufferAddress(udmaId);
  
-    const char* data = "hello world!";
-
+    const char* data = "I've got another confession to make I'm your fool Everyone's got their chains to break Holding you";
+    size_t size = strlen(data);
 
     udmaDriver.clearUdmaBuffer(udmaId);
-    writeData(destAddr, 0, 12*8, data);    
-    displayData((void*)destAddr, 16, 0);
-    displayDataChar((void*)destAddr, 16, 0);
+    writeData(destAddr, 0, size, data);    
+    
+    displayDataChar((void*)destAddr, size, 0);
+    displayDataChar((void*)destAddr, size, 8);
+    displayDataChar((void*)destAddr, size, 16);
+    displayData((void*)destAddr, size, 16);
 }

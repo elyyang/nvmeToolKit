@@ -33,38 +33,41 @@
 
 #include "stdio.h"
 #include "stdint.h"
+#include "assertLib.h"
 
 #pragma message("need clean up displayData and displayDataChar functions - ported from legacy")
-void displayData(void* address, uint32_t nBytes, uint32_t offsetSize)
+void displayData(void* address, uint32_t nBytes, uint32_t bytePerLine)
 {
+    NVME_DBG_ASSERT((bytePerLine%4)==0, "bytePerLine need to be dword aligned!")
+
     uint32_t offset;
     uint32_t line;
     
-    printf("=================================================================================\n");
+    printf("===========================================\n");
     printf("base address:   %p \n", address);    
     printf("nbytes:         %d \n", nBytes);
-    printf("=================================================================================\n");
+    printf("===========================================\n");
     
     printf("Line \t Offset \t Data \n");
     
-    if(!offsetSize)
+    if(!bytePerLine)
     {
-        offsetSize = 4;
+        bytePerLine = 4;
     }
 
-    line = nBytes / offsetSize;
+    line = nBytes / bytePerLine;
     
-    if(nBytes % offsetSize)
+    if(nBytes % bytePerLine)
     {
         line++;
     }
     
     for(uint32_t j = 0; j<line; j++)
     {
-        offset = offsetSize * j;        
+        offset = bytePerLine * j;        
         printf("%4d \t 0x%08x \t ", j, offset);
         
-        for(uint32_t i = 0; i < offsetSize; i++)
+        for(uint32_t i = 0; i < bytePerLine; i++)
         {   
             printf("%.2x ", *((uint8_t*)address + offset + i));            
         }        
@@ -72,36 +75,38 @@ void displayData(void* address, uint32_t nBytes, uint32_t offsetSize)
     } 
 }
 
-void displayDataChar(void* address, uint32_t nBytes, uint32_t offsetSize)
+void displayDataChar(void* address, uint32_t nBytes, uint32_t bytePerLine)
 {
+    NVME_DBG_ASSERT((bytePerLine%4)==0, "bytePerLine need to be dword aligned!")
+
     uint32_t offset;
     uint32_t line;
     
-    printf("=================================================================================\n");
+    printf("===========================================\n");
     printf("base address:   %p \n", address);    
     printf("nbytes:         %d \n", nBytes);
-    printf("=================================================================================\n");
+    printf("===========================================\n");
     
     printf("Line \t Offset \t Data \n");
     
-    if(!offsetSize)
+    if(!bytePerLine)
     {
-        offsetSize = 4;
+        bytePerLine = 4;
     }
 
-    line = nBytes / offsetSize;
+    line = nBytes / bytePerLine;
     
-    if(nBytes % offsetSize)
+    if(nBytes % bytePerLine)
     {
         line++;
     }
     
     for(uint32_t j = 0; j<line; j++)
     {
-        offset = offsetSize * j;        
+        offset = bytePerLine * j;        
         printf("%4d \t 0x%08x \t ", j, offset);
         
-        for(uint32_t i = 0; i < offsetSize; i++)
+        for(uint32_t i = 0; i < bytePerLine; i++)
         {   
             printf("%c ", *((uint8_t*)address + offset + i));            
         }        
