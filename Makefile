@@ -78,8 +78,8 @@ DEFINES +=	-D ENABLE_ASSERT_LIB=1
 ##############################################################################################################
 
 # Compiler
-CC = g++
-#CC = clang++
+#CC = g++
+CC = clang++
 
 # Compile Flags
 CFLAGS =	-std=c++2a
