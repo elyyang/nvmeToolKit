@@ -85,7 +85,7 @@ void test_wdata()
     udmaDriver.clearUdmaBuffer(udmaId);
     writeData(destAddr, 0, size, data);    
     
-    displayDataChar(destAddr, size, 0);
+    displayDataChar(destAddr, size, 4);
     displayDataChar(destAddr, size, 8);
     displayDataChar(destAddr, size, 16);
     displayData(destAddr, size, 16);
