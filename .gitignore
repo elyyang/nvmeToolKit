@@ -1,3 +1,5 @@
 build/*
 scripts/subrepo
 subrepo
+CMakeFiles/*
+CMakeCache.txt
