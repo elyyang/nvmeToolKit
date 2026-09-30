@@ -34,3 +34,6 @@ message(STATUS "System version: ${CMAKE_SYSTEM_VERSION}")
 add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(util)
+
+add_executable(nvmeToolKit main.cpp)
+target_link_libraries(nvmeToolKit PRIVATE sample unit menu)

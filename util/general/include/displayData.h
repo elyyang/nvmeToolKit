@@ -33,5 +33,13 @@
 
 #include "stdint.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void displayData(uintptr_t address, uint32_t nBytes, uint32_t bytePerLine);
 void displayDataChar(uintptr_t address, uint32_t nBytes, uint32_t bytePerLine);
+
+#ifdef __cplusplus
+}
+#endif

@@ -33,7 +33,15 @@
 
 #include "stdint.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void writeData8(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const uint8_t data);
 void writeData16(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const uint16_t data);
 void writeData32(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const uint32_t data);
 void writeData(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const char* data); 
+
+#ifdef __cplusplus
+}
+#endif

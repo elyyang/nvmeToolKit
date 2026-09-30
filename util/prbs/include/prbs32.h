@@ -36,5 +36,13 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void prbs32_fill(uintptr_t startingAddress, uint32_t startingSeed, uint32_t iteration);
 bool prbs32_verify(uintptr_t startingAddress, uint32_t startingSeed, uint32_t iteration);
+
+#ifdef __cplusplus
+}
+#endif
