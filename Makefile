@@ -37,6 +37,7 @@ RUN = FALSE
 SOURCE_NAME = app drv lib
 UTIL_NAME = general menu prbs
 TEST_NAME = sample mock unit
+COMPILER = clang
 
 ##############################################################################################################
 
@@ -78,8 +79,13 @@ DEFINES +=	-D ENABLE_ASSERT_LIB=1
 ##############################################################################################################
 
 # Compiler
-#CC = g++
+ifeq ($(COMPILER), gcc)
+CC = g++
+else ifeq ($(COMPILER), clang)
 CC = clang++
+else
+$(error No compiler selected. Run 'make COMPILER=gcc' or 'make COMPILER=clang')
+endif
 
 # Compile Flags
 CFLAGS =	-std=c++2a
