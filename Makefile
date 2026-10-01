@@ -37,7 +37,7 @@ RUN = FALSE
 SOURCE_NAME = app drv lib
 UTIL_NAME = general menu prbs
 TEST_NAME = sample mock unit
-COMPILER = clang
+COMPILER = gcc
 
 ##############################################################################################################
 

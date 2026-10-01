@@ -96,7 +96,7 @@ void menu_c::displayCurrentSubMenuItems()
 
 void menu_c::displayPrompt()
 {
-    CONSOLE_PRINT("(q)uit, return to (m)ain men, menu (t)ree | selection: ");
+    CONSOLE_PRINT("(q)uit, (m)ain menu, (t)ree | selection: ");
 }
 
 void menu_c::displayBorder()

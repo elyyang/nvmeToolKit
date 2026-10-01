@@ -132,14 +132,20 @@ void demo_nvmControllerMmioSpace()
 
 void demo_nvmeEnumeration()
 {
-    controllerHandle_c& handle = controllerHandle_c::getInstance();
-    handle.configureAdminQueue();
-    handle.enableController();
-    while (!handle.isControllerReady())
+    pcieCfgSpace_c& pcieDrv = pcieCfgSpace_c::getInstance();
+    controllerHandle_c& nvmCtrlHandle = controllerHandle_c::getInstance();
+
+    printf("BME status: %d \n", pcieDrv.getBusMasterEnable(g_uioId));
+    pcieDrv.setBusMasterEnable(g_uioId, true);
+    printf("BME status: %d \n", pcieDrv.getBusMasterEnable(g_uioId));
+
+    nvmCtrlHandle.configureAdminQueue();
+    nvmCtrlHandle.enableController();
+    while (!nvmCtrlHandle.isControllerReady())
     {
         printf("Waiting for controller to be ready...\n");
     }
-    handle.issueIdentifyCommand();
+    nvmCtrlHandle.issueIdentifyCommand();
 
     udma_c& udmaDriver = udma_c::getInstance();
     udmaDriver.dumpUdmaBufferContent(0, 0, 4096, 16);
