@@ -129,8 +129,6 @@ void udma_c::dumpUdmaBufferInformation()
     }
 }
 
-#pragma message("update this to be more flexible")
-
 void udma_c::dumpUdmaBufferContent(uint32_t udmaId, uint32_t offset, uint32_t nBytes, uint32_t bytePerLine)
 {
     NVME_DBG_ASSERT((udmaId<DEFAULT_UDMA_BUFFER_COUNT), "udmaId out of range!")
