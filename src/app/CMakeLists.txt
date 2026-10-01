@@ -7,4 +7,7 @@ add_library(${TARGET} STATIC)
 target_sources(${TARGET} PRIVATE controllerHandle.cpp)
  
 target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-target_link_libraries(app PUBLIC lib drv generalUtil)
+
+target_link_libraries(${TARGET} PUBLIC lib)
+target_link_libraries(${TARGET} PUBLIC drv)
+target_link_libraries(${TARGET} PUBLIC generalUtil)
