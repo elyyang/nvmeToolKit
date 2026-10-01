@@ -31,11 +31,11 @@
 
 ### CMake
 
-  $ sudo cmake -B ./build
-  $ cd build
-  $ sudo make all
-  $ sudo ./nvmeTool
-  $ sudo make clean  
+  * $ sudo cmake -B ./build
+  * $ cd build
+  * $ sudo make all
+  * $ sudo ./nvmeTool
+  * $ sudo make clean  
 
 
 ## Troubleshoot
