@@ -34,6 +34,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 static uint32_t prbs32_next(const uint32_t seed)
 {
     uint32_t mask = (1UL << 32) - 1;
@@ -66,3 +70,7 @@ bool prbs32_verify(uintptr_t startingAddress, uint32_t startingSeed, uint32_t it
     }    
     return true;
 }
+
+#ifdef __cplusplus
+}
+#endif

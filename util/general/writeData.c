@@ -33,6 +33,10 @@
 
 #include "stdint.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void writeData8(const uintptr_t destinationAddress, const uint32_t offset, const uint32_t size, const uint8_t data) 
 {
     uint8_t* bufferPtr = (uint8_t*)destinationAddress + offset;
@@ -77,3 +81,7 @@ void writeData(const uintptr_t destinationAddress, const uint32_t offset, const 
         data++;
     }
 }
+
+#ifdef __cplusplus
+}
+#endif
