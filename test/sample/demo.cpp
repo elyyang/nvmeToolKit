@@ -127,7 +127,21 @@ void demo_nvmControllerMmioSpace()
     printf("NVM subsystem shutdown supported: 0x%x \n", controllerCapabiltiyShadow.nvmSubsystemShutdownSupported);
     printf("controller ready modes supported: 0x%x \n", controllerCapabiltiyShadow.controllerReadyModesSupported);
     printf("NVM subsystem shutdown enhancements supported: 0x%x \n", controllerCapabiltiyShadow.nvmSubsystemShutdownEnhancementsSupported);
+}
 
+void demo_nvmControllerSqCqDoorbellSpace()
+{
+    controllerMmio_c& controllerMmioDriver = controllerMmio_c::getInstance();
+
+    uint16_t sqtDoorbellValue;
+    uint16_t cqhDoorbellValue;
+
+    for(uint32_t queueId=0; queueId<32; queueId++)
+    {
+        sqtDoorbellValue = controllerMmioDriver.getSqTailDoorbell(g_uioId, queueId);
+        cqhDoorbellValue = controllerMmioDriver.getCqHeadDoorbell(g_uioId, queueId);
+        printf("queue id: %d sqTail doorbell: 0x%x cqHead doorbell: 0x%x \n", queueId, sqtDoorbellValue, cqhDoorbellValue);
+    }
 }
 
 void demo_nvmeEnumeration()

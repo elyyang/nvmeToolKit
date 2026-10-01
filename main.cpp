@@ -67,6 +67,7 @@ void menuInit()
 
     g_nvmeUtil_subMenu.addDescription("nvme utilities");
     g_nvmeUtil_subMenu.addItem(demo_nvmControllerMmioSpace, "nvme controller capabilities");
+    g_nvmeUtil_subMenu.addItem(demo_nvmControllerSqCqDoorbellSpace, "nvme controller sq/cq doorbell space");
 
     g_nvmeToolKit_mainMenu.addDescription("NVMe Toolkit");
     g_nvmeToolKit_mainMenu.addItem(g_demo_subMenu,     "demo");
