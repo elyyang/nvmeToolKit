@@ -71,8 +71,6 @@ void test_wdata32()
     udmaDriver.dumpUdmaBufferContent(udmaId, 0, 0x1100, 4);
 }
 
-#pragma message("update writeData unit test to be more comprehensive")
-
 void test_wdata()
 {
     udma_c& udmaDriver = udma_c::getInstance();

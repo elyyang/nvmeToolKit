@@ -71,5 +71,3 @@ void test_udma2()
     prbs32_fill(bufferAddressUnderTest, prbs32StartingSeed, BYTE_TO_DWORD(bufferSizeUnderTest));
     udmaDriver.dumpUdmaBufferContent(udmaId, 0, bufferSizeUnderTest+0x100, 4);    
 }
-
-#pragma message("add udma clear buffer test")
