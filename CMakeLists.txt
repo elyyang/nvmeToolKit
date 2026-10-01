@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.22.1)
 
+set(CMAKE_C_COMPILER gcc CACHE FILEPATH "C compiler")
+set(CMAKE_CXX_COMPILER g++ CACHE FILEPATH "C++ compiler")
+#set(CMAKE_C_COMPILER clang CACHE FILEPATH "C compiler")
+#set(CMAKE_CXX_COMPILER clang++ CACHE FILEPATH "C++ compiler")
+
 project(default)
 
 set(PROJECT_NAME nvmeTookKit)

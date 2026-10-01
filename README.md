@@ -31,11 +31,12 @@ or
 
 ### cmake
 
-* $ sudo cmake -B ./build
+* $ sudo cmake -S . -B build
 * $ cd build
 * $ sudo make all
 * $ sudo ./nvmeTool
 * $ sudo make clean  
+* $ sudo rm -rf build
 
 
 ## Troubleshoot
