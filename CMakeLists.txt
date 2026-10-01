@@ -35,5 +35,8 @@ add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(util)
 
-add_executable(nvmeToolKit main.cpp)
-target_link_libraries(nvmeToolKit PRIVATE sample unit menu)
+add_executable(${PROJECT_NAME} main.cpp)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE sampleTest)
+target_link_libraries(${PROJECT_NAME} PRIVATE unitTest)
+target_link_libraries(${PROJECT_NAME} PRIVATE menuUtil)

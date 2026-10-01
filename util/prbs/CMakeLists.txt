@@ -8,4 +8,4 @@ target_sources(${TARGET} PRIVATE prbs32.c)
  
 target_include_directories(${TARGET} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-target_link_libraries(${TARGET} PUBLIC include)
+target_link_libraries(${TARGET} PUBLIC generalInclude)
