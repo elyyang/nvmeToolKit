@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22.1)
  
-set(TARGET util)
+set(TARGET generalUtil)
 
 add_library(${TARGET} STATIC)
 

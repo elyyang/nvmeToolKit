@@ -10,4 +10,4 @@ target_sources(${TARGET} PRIVATE uio.cpp)
 target_include_directories(${TARGET} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 target_link_libraries(${TARGET} PUBLIC include)
-target_link_libraries(${TARGET} PUBLIC util)
+target_link_libraries(${TARGET} PUBLIC generalUtil)
