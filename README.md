@@ -5,37 +5,37 @@
 
 ### bind uio driver to nvme device
 
-  $ sudo ./scripts/setup_uio.sh 
-  or
-  $ sudo ./scripts/setup_uio.sh config
+* $ sudo ./scripts/setup_uio.sh 
+or
+* $ sudo ./scripts/setup_uio.sh config
 
 
 ### setup udma driver
 
-  $ sudo ./scripts/setup_udma.sh 
+* $ sudo ./scripts/setup_udma.sh 
 
 
 ### reset
 
-  $ sudo ./scripts/setup_uio.sh reset
-  $ sudo ./scripts/setup_udma.sh reset
+* $ sudo ./scripts/setup_uio.sh reset
+* $ sudo ./scripts/setup_udma.sh reset
 
 
 ## build options
 
 ### MakeFile
 
-  $ sudo make all
-  $ sudo ./build/nvmeTool  
-  $ sudo make clean
+* $ sudo make all
+* $ sudo ./build/nvmeTool  
+* $ sudo make clean
 
 ### CMake
 
-  * $ sudo cmake -B ./build
-  * $ cd build
-  * $ sudo make all
-  * $ sudo ./nvmeTool
-  * $ sudo make clean  
+* $ sudo cmake -B ./build
+* $ cd build
+* $ sudo make all
+* $ sudo ./nvmeTool
+* $ sudo make clean  
 
 
 ## Troubleshoot
