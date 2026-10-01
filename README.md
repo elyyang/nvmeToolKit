@@ -1,7 +1,7 @@
 # NVMe Tool Kit #
 
 
-## Getting started
+## Getting Started
 
 ### bind uio driver to nvme device
 
@@ -21,15 +21,15 @@ or
 * $ sudo ./scripts/setup_udma.sh reset
 
 
-## build options
+## Build Options
 
-### MakeFile
+### makefile
 
 * $ sudo make all
 * $ sudo ./build/nvmeTool  
 * $ sudo make clean
 
-### CMake
+### cmake
 
 * $ sudo cmake -B ./build
 * $ cd build
