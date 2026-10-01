@@ -39,7 +39,7 @@
 extern "C" {
 #endif
 
-void displayData(uintptr_t address, uint32_t nBytes, uint32_t bytePerLine)
+void displayData(const uintptr_t address, const uint32_t nBytes, const uint32_t bytePerLine)
 {
     NVME_DBG_ASSERT((bytePerLine%4)==0, "bytePerLine need to be dword aligned!")
     NVME_DBG_ASSERT((bytePerLine>=4), "bytePerLine need to be dword aligned!")
@@ -60,7 +60,7 @@ void displayData(uintptr_t address, uint32_t nBytes, uint32_t bytePerLine)
     printf("\n\n");
 }
 
-void displayDataChar(uintptr_t address, uint32_t nBytes, uint32_t bytePerLine)
+void displayDataChar(const uintptr_t address, const uint32_t nBytes, const uint32_t bytePerLine)
 {
     NVME_DBG_ASSERT((bytePerLine%4)==0, "bytePerLine need to be dword aligned!")
     NVME_DBG_ASSERT((bytePerLine>=4), "bytePerLine need to be dword aligned!")
