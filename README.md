@@ -49,6 +49,7 @@ solution:
 * re-install linux-headers:
 * shell$ sudo apt install --reinstall linux-headers-$(uname -r)
 
+
 ### device fail to bind
 
 error message:
