@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22.1)
  
-set(TARGET inc)
+set(TARGET include)
 
 add_library(${TARGET} INTERFACE)
 
