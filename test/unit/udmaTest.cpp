@@ -71,3 +71,29 @@ void test_udma2()
     prbs32_fill(bufferAddressUnderTest, prbs32StartingSeed, BYTE_TO_DWORD(bufferSizeUnderTest));
     udmaDriver.dumpUdmaBufferContent(udmaId, 0, bufferSizeUnderTest+0x100, 4);    
 }
+
+#include "nvmeStructs.h"
+#include "regAccess.h"
+
+void test_udma3()
+{
+    udma_c& udmaDriver = udma_c::getInstance();
+
+    uint32_t udmaId=0;        
+    uintptr_t bufferAddressUnderTest = udmaDriver.getBufferAddress(udmaId);
+
+    identifyCommand_t sampleNvmCommand = {};
+    sampleNvmCommand.common.opcode = NVME_COMMAND_ADMIN_IDENTIFY;
+    sampleNvmCommand.common.commandIdentifier = 0x1234;
+    sampleNvmCommand.common.namespaceIdentifier = 0xca; 
+    sampleNvmCommand.common.dataPointer.prpEntries.prpEntry1 = udmaDriver.getBufferPhysicalAddress(2);
+    
+    sampleNvmCommand.controllerOrNamespaceStructure = 1;
+    sampleNvmCommand.cnsSpecificIdentifier = 0x5678;
+    sampleNvmCommand.controllerIdentifier = 0xfe;
+ 
+    memcpy((void*)bufferAddressUnderTest, (void*)&sampleNvmCommand, sizeof(identifyCommand_t));
+    
+    udmaDriver.dumpUdmaBufferContent(udmaId, 0, sizeof(identifyCommand_t), 8);
+}
+

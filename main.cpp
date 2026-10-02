@@ -57,6 +57,7 @@ void menuInit()
     g_tests_subMenu.addDescription("unit tests");
     g_tests_subMenu.addItem(test_udma1, "udma prbs test");
     g_tests_subMenu.addItem(test_udma2, "udma dump test");
+    g_tests_subMenu.addItem(test_udma3, "udma nvm cmd copy test");
     g_tests_subMenu.addItem(test_wdata8, "write byte data test");
     g_tests_subMenu.addItem(test_wdata16, "write word data test");
     g_tests_subMenu.addItem(test_wdata32, "write double word data test");
