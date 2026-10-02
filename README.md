@@ -1,6 +1,5 @@
 # NVMe Tool Kit #
 
-
 ## Getting Started
 
 ### bind uio driver to nvme device
@@ -60,6 +59,10 @@ solution:
 * run binary as superuser
 * shell$ sudo ./build/nvmeTool
 
+## Compatibility
+
+Ubuntu 26.04.1 LTS
+Linux 7.0.0-38-generic x86_64
 
 
 ELY 2026
