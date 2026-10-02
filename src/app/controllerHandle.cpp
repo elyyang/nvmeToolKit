@@ -100,7 +100,12 @@ void controllerHandle_c::issueIdentifyCommand()
     nvmCommand.common.opcode = NVME_COMMAND_ADMIN_IDENTIFY;
     nvmCommand.common.commandIdentifier = mCommandId++;
     nvmCommand.common.dataPointer.prpEntries.prpEntry1 = udmaDrv.getBufferPhysicalAddress(2);
-    nvmCommand.controllerOrNamespaceStructure = 1; // Identify Controller
+    nvmCommand.common.namespaceIdentifier = 0; 
+    
+    nvmCommand.controllerOrNamespaceStructure = 1; 
+    nvmCommand.cnsSpecificIdentifier = 0x0;
+    nvmCommand.controllerIdentifier = 0x1;
+    
 
     controllerMmio_c& nvmeControllerDrv = controllerMmio_c::getInstance();
 
@@ -108,7 +113,7 @@ void controllerHandle_c::issueIdentifyCommand()
 
     uint64_t destAddress = mAdminSubmissionQueueBaseAddress + (sqTailDoorbell * sizeof(nvmeCommand_t));
 
-    regWrite64Bit(destAddress, *(uint64_t*)&nvmCommand);
-
+    memcpy((void*)destAddress, (void*)&nvmCommand, sizeof(identifyCommand_t));
+    
     nvmeControllerDrv.incrementSqTailDoorbell(g_uioId, ADMIN_QUEUE_ID);
 }

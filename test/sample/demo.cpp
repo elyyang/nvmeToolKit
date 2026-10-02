@@ -162,7 +162,7 @@ void demo_nvmeEnumeration()
     nvmCtrlHandle.issueIdentifyCommand();
 
     udma_c& udmaDriver = udma_c::getInstance();
-    udmaDriver.dumpUdmaBufferContent(0, 0, 4096, 16);
+    udmaDriver.dumpUdmaBufferContent(0, 0, 64, 16);
     udmaDriver.dumpUdmaBufferContent(1, 0, 4096, 16);
     udmaDriver.dumpUdmaBufferContent(2, 0, 4096, 16);
 }
