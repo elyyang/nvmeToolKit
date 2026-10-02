@@ -7,7 +7,8 @@ set(CMAKE_CXX_COMPILER g++ CACHE FILEPATH "C++ compiler")
 
 project(default)
 
-set(PROJECT_NAME nvmeTookKit)
+string(TIMESTAMP BUILD_DATE "%Y%m%d")
+set(PROJECT_NAME "nvmeToolKit_${BUILD_DATE}")
 set(PROJECT_LANGUAGES CXX C)
 set(PROJECT_VERSION 1.0.0)
 
